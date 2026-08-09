@@ -1,0 +1,83 @@
+// Header scroll state
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Mobile menu
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+function closeMenu(){ navLinks.classList.remove('open'); }
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.15 });
+revealEls.forEach(el => io.observe(el));
+
+// Portfolio filter
+const filterBtns = document.querySelectorAll('.filter-btn');
+const portfolioGrid = document.getElementById('portfolioGrid');
+const workTitle = document.getElementById('workTitle');
+const workCategory = document.getElementById('workCategory');
+const workImage = document.getElementById('workImage');
+const uploadNote = document.getElementById('uploadNote');
+
+function applyPortfolioFilter(filter){
+  const cards = document.querySelectorAll('#portfolioGrid .card');
+  cards.forEach(c => {
+    c.style.display = (filter === 'all' || c.dataset.cat === filter) ? '' : 'none';
+  });
+}
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyPortfolioFilter(btn.dataset.filter);
+  });
+});
+
+workImage.addEventListener('change', event => {
+  const files = Array.from(event.target.files || []);
+  const category = workCategory.value;
+  const categoryLabel = category === 'desain' ? 'Desain Grafis' : 'Fotografi';
+  const title = workTitle.value.trim() || 'Karya Baru';
+  const oversized = files.find(file => file.size > 5 * 1024 * 1024);
+
+  if (oversized) {
+    uploadNote.textContent = `${oversized.name} terlalu besar. Maksimal 5 MB per gambar.`;
+    uploadNote.style.color = 'var(--gold-bright)';
+  }
+
+  files.filter(file => file.size <= 5 * 1024 * 1024 && file.type.startsWith('image/')).forEach((file, index) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      const card = document.createElement('div');
+      card.className = 'card reveal in uploaded-card';
+      card.dataset.cat = category;
+      card.innerHTML = `<div class="card-thumb has-image"><img src="${reader.result}" alt="${title}${files.length > 1 ? ` ${index + 1}` : ''}"><span class="cat-icon">${categoryLabel}</span></div><div class="card-body"><span class="card-tag">${categoryLabel}</span><div class="card-title">${title}${files.length > 1 ? ` ${index + 1}` : ''}</div><div class="card-year">2026 · Karya pribadi</div></div>`;
+      portfolioGrid.appendChild(card);
+      const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+      applyPortfolioFilter(activeFilter);
+    });
+    reader.readAsDataURL(file);
+  });
+
+  if (files.length && !oversized) uploadNote.textContent = `${files.length} gambar sedang ditambahkan ke galeri.`;
+  workImage.value = '';
+});
+
+// Contact form (no backend — opens mail client)
+function handleSubmit(e){
+  e.preventDefault();
+  const name = document.getElementById('fname').value;
+  const email = document.getElementById('femail').value;
+  const msg = document.getElementById('fmsg').value;
+  const subject = encodeURIComponent('Pesan dari Portofolio — ' + name);
+  const body = encodeURIComponent(msg + '\n\nDari: ' + name + ' (' + email + ')');
+  window.location.href = 'mailto:sholehbadrus278@gmail.com?subject=' + subject + '&body=' + body;
+  return false;
+}

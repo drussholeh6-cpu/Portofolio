@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mukhamad Badrus Sholeh — Desain, Cahaya & Angka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Space+Grotesk:wght@300;400;500;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-texture"></div>
+
+<header id="siteHeader">
+  <a href="#top" class="logo">
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 2 L23.5 14.5 L36 12 L26.5 20 L36 28 L23.5 25.5 L20 38 L16.5 25.5 L4 28 L13.5 20 L4 12 L16.5 14.5 Z" stroke="#c9a961" stroke-width="1.1"/>
+    </svg>
+    Mukhamad Badrus Sholeh
+  </a>
+  <nav class="links" id="navLinks">
+    <a href="#top" onclick="closeMenu()">Beranda</a>
+    <a href="#tentang" onclick="closeMenu()">Tentang</a>
+    <a href="#karya" onclick="closeMenu()">Karya</a>
+    <a href="#prestasi" onclick="closeMenu()">Prestasi</a>
+    <a href="#kontak" onclick="closeMenu()">Kontak</a>
+  </nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Buka menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<section class="hero" id="top">
+  <div class="profile-hero">
+    <div class="profile-photo-wrap">
+      <div class="profile-photo-frame" id="profilePhotoFrame" tabindex="0" aria-label="Pratinjau foto profil">
+        <img id="profilePhoto" src="Profile.JPG" alt="Foto profil Mukhamad Badrus Sholeh">
+        <img class="profile-photo-secondary" src="Badrus.JPG" alt="Foto kedua Mukhamad Badrus Sholeh" onerror="this.style.display='none';">
+        <span class="photo-index">/ 01 → 02</span>
+      </div>
+      <div class="photo-caption"><span class="live-dot"></span> ARAHKAN KURSOR KE FOTO <b>2026</b></div>
+    </div>
+    <div class="hero-content">
+      <div class="eyebrow-line"></span> HALO, SAYA</div>
+      <h1 class="name"><span>Mukhamad</span><br><em>Badrus</em><br>Sholeh</h1>
+      <div class="role-line">
+        <span>Desainer Grafis</span>
+        <span>Fotografer</span>
+        <span>Mahasiswa Matematika</span>
+      </div>
+      <p class="hero-desc">Saya merangkai ide menjadi identitas visual yang bermakna. Seorang alumni Pondok Pesantren, juga mahasiswa UIN Malang, dan pencipta karya yang percaya pada ketelitian.</p>
+      <div class="cta-row">
+        <a href="#karya" class="btn btn-primary">Lihat Karya <span>↗</span></a>
+        <a href="#tentang" class="btn btn-ghost">Kenali Saya <span>↓</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="profile-meta">
+    <div><span class="meta-label">Lokasi</span><strong>Malang, Indonesia</strong></div>
+    <div><span class="meta-label">Pendidikan</span><strong>UIN Maulana Malik Ibrahim</strong></div>
+    <div><span class="meta-label">Minat</span><strong>Qur'an-Visual-Angka</strong></div>
+    <div><span class="meta-label">Status</span><strong><i></i> Terbuka berkolaborasi</strong></div>
+  </div>
+  <div class="scroll-hint"><span>Gulir</span><div class="line"></div></div>
+</section>
+
+<section id="tentang">
+  <div class="section-head reveal">
+    <span class="section-num">01 — Tentang</span>
+    <h2 class="section-title">Terus Melangkah <em>Menggapai mimpi</em></h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>Saya <strong>Mukhamad Badrus Sholeh</strong>, mahasiswa <strong>Matematika angkatan 2025 UIN Maulana Malik Ibrahim Malang</strong>. Di luar kuliah, saya membangun identitas visual untuk berbagai brand dan komunitas sebagai <strong>desainer grafis</strong>, serta mengabadikan momen melalui <strong>fotografi</strong>.</p>
+      <p>Saya juga aktif di ajang <strong>Musabaqah Fahmil Qur'an (MFQ)</strong> — cabang lomba yang menuntut ketepatan hafalan, kecepatan berpikir, dan kedalaman pemahaman terhadap Al-Qur'an. Bagi saya, ketiga dunia ini tidak terpisah: matematika mengajarkan struktur, desain mengajarkan rasa, dan Al-Qur'an mengajarkan ketelitian yang menaungi keduanya.</p>
+    </div>
+    <div class="stat-list reveal">
+      <div class="stat-row"><span class="label">Program Studi</span><span class="value">Matematika</span></div>
+      <div class="stat-row"><span class="label">Kampus</span><span class="value">UIN Malang</span></div>
+      <div class="stat-row"><span class="label">Angkatan</span><span class="value">2025</span></div>
+      <div class="stat-row"><span class="label">Media Kreatif</span><span class="value">Desain & Foto</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="karya">
+  <div class="section-head reveal">
+    <span class="section-num">02 — Karya</span>
+    <h2 class="section-title">Yang pernah <em>saya buat</em></h2>
+  </div>
+  <div class="filter-row reveal">
+    <button class="filter-btn active" data-filter="all">Semua</button>
+    <button class="filter-btn" data-filter="desain">Desain Grafis</button>
+    <button class="filter-btn" data-filter="foto">Fotografi</button>
+  </div>
+  <div class="grid-portfolio" id="portfolioGrid">
+
+    <div class="card reveal" data-cat="desain">
+      <div class="card-thumb">
+        <img src="Pamflet Ifest.png" alt="Pamflet Lomba Ifest" onerror="this.onerror=null; this.src='Pamflet Ifest.png';">
+        <span class="cat-icon">Identitas Visual</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Desain Grafis</span>
+        <div class="card-title">Pamflet Lomba Ifest</div>
+        <div class="card-year">2026</div>
+      </div>
+    </div>
+
+    <div class="card reveal" data-cat="foto">
+      <div class="card-thumb">
+        <img src="Difani.JPG" alt="Potret Makrab Phinix" onerror="this.onerror=null; this.src='Difani.JPG';">
+        <span class="cat-icon">Human Interest</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Fotografi</span>
+        <div class="card-title">Potret Makrab Phinix</div>
+        <div class="card-year">2026</div>
+      </div>
+    </div>
+
+    <div class="card reveal" data-cat="desain">
+      <div class="card-thumb">
+        <img src="STOP SCROLL.png" alt="Infografis" onerror="this.onerror=null; this.src='STOP SCROLL.png';">
+        <span class="cat-icon">Poster & Media</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Desain Grafis</span>
+        <div class="card-title">Infografis</div>
+        <div class="card-year">2026</div>
+      </div>
+    </div>
+
+    <div class="card reveal" data-cat="foto">
+      <div class="card-thumb">
+        <img src="Kak Fai.JPG" alt="Potret Kota Lama" onerror="this.onerror=null; this.src='Kak Fai.JPG';">
+        <span class="cat-icon">Arsitektur</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Fotografi</span>
+        <div class="card-title">Potret Kota Lama</div>
+        <div class="card-year">2026</div>
+      </div>
+    </div>
+
+    <div class="card reveal" data-cat="desain">
+      <div class="card-thumb">
+        <img src="Portofolio.png" alt="Desain Portofolio" onerror="this.onerror=null; this.src='Portofolio.png';">
+        <span class="cat-icon">Ilustrasi</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Desain Grafis</span>
+        <div class="card-title">Desain Portofolio</div>
+        <div class="card-year">2026</div>
+      </div>
+    </div>
+
+    <div class="card reveal" data-cat="foto">
+      <div class="card-thumb">
+        <img src="Hanif.JPG" alt="Potret Makrab Phinix" onerror="this.onerror=null; this.src='Hanif.JPG';">
+        <span class="cat-icon">Momen</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Fotografi</span>
+        <div class="card-title">Potret Makrab Phinix</div>
+        <div class="card-year">2026</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="prestasi">
+  <div class="section-head reveal">
+    <span class="section-num">03 — Prestasi</span>
+    <h2 class="section-title">Jejak di atas <em>panggung lomba</em></h2>
+  </div>
+  <div class="ach-list">
+    <div class="ach-item reveal">
+      <div class="ach-year">2026</div>
+      <div class="ach-main">
+        <div class="ach-title">Musabaqah Fahmil Qur'an HTQ Qur'anic Competition</div>
+        <div class="ach-desc">Hai'ah Tahfidz Al-Qur'an UIN Malang</div>
+      </div>
+      <div class="ach-badge">Juara 1</div>
+    </div>
+    <div class="ach-item reveal">
+      <div class="ach-year">2025</div>
+      <div class="ach-main">
+        <div class="ach-title">Cerdas Cermat MSAA Fest</div>
+        <div class="ach-desc">Pusat Ma'had Al-Jami'ah UIN Malang</div>
+      </div>
+      <div class="ach-badge">Juara 2</div>
+    </div>
+    <div class="ach-item reveal">
+      <div class="ach-year">2025</div>
+      <div class="ach-main">
+        <div class="ach-title">Integral Olympiad Number Integral Festival</div>
+        <div class="ach-desc">HMPS Integral Matematika UIN Malang</div>
+      </div>
+      <div class="ach-badge">Juara 3</div>
+    </div>
+    <div class="ach-item reveal">
+      <div class="ach-year">2025</div>
+      <div class="ach-main">
+        <div class="ach-title">Diterima di Program Studi Matematika, UIN Malang</div>
+        <div class="ach-desc">Mengawali perjalanan akademik di bidang matematika murni.</div>
+      </div>
+      <div class="ach-badge">Akademik</div>
+    </div>
+  </div>
+</section>
+
+<section id="kontak">
+  <div class="section-head reveal">
+    <span class="section-num">04 — Kontak</span>
+    <h2 class="section-title">Mari <em>berkolaborasi</em></h2>
+  </div>
+  <div class="contact-wrap">
+    <div class="contact-info reveal">
+      <p>Terbuka untuk proyek desain, sesi foto, kolaborasi konten keagamaan, atau sekadar berdiskusi tentang matematika dan Al-Qur'an. Silakan hubungi lewat kanal berikut.</p>
+      <div class="contact-list">
+        <a href="mailto:sholehbadrus278@email.com"><span class="ic">✉</span> sholehbadrus278@email.com</a>
+        <a href="https://www.instagram.com/mukh.bad_rush?igsh=YXpwMDh2dXFsNHJ5" target="_blank" rel="noopener"><span class="ic">◈</span> @mukh.bad_rush — Instagram</a>
+        <a href="https://wa.me/6283144248221" target="_blank" rel="noopener"><span class="ic">☏</span> +62 831-4424-8221</a>
+      </div>
+    </div>
+    <form class="reveal" onsubmit="return handleSubmit(event)">
+      <div class="field">
+        <label for="fname">Nama</label>
+        <input type="text" id="fname" required placeholder="Nama lengkap">
+      </div>
+      <div class="field">
+        <label for="femail">Email</label>
+        <input type="email" id="femail" required placeholder="email@contoh.com">
+      </div>
+      <div class="field">
+        <label for="fmsg">Pesan</label>
+        <textarea id="fmsg" required placeholder="Ceritakan proyekmu..."></textarea>
+      </div>
+      <button type="submit" class="send-btn">Kirim Pesan</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Mukhamad Badrus Sholeh. Dibuat dengan ketelitian.</span>
+  <svg class="foot-star" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 2 L23.5 14.5 L36 12 L26.5 20 L36 28 L23.5 25.5 L20 38 L16.5 25.5 L4 28 L13.5 20 L4 12 L16.5 14.5 Z" stroke="#c9a961" stroke-width="1.1"/>
+  </svg>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
