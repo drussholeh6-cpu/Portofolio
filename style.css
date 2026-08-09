@@ -368,6 +368,8 @@ form{ display:flex; flex-direction:column; gap:22px; }
   text-transform:uppercase; padding:14px 32px; cursor:pointer; border-radius:2px; transition:.35s;
 }
 .send-btn:hover{ background:var(--gold); color:#161208; }
+.form-status{ color:var(--gold-bright); font-size:.82rem; line-height:1.5; border-left:2px solid var(--gold); padding:10px 14px; background:rgba(201,169,97,.08); }
+.form-status[hidden]{ display:none; }
 
 footer{
   border-top:1px solid var(--line); padding:40px 6vw; display:flex; justify-content:space-between;

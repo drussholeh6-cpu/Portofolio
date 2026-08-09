@@ -164,8 +164,10 @@ function handleSubmit(e){
   const name = document.getElementById('fname').value;
   const email = document.getElementById('femail').value;
   const msg = document.getElementById('fmsg').value;
+  const formStatus = document.getElementById('formStatus');
   const subject = encodeURIComponent('Pesan dari Portofolio — ' + name);
   const body = encodeURIComponent(msg + '\n\nDari: ' + name + ' (' + email + ')');
+  formStatus.hidden = false;
   window.location.href = 'mailto:sholehbadrus278@gmail.com?subject=' + subject + '&body=' + body;
   return false;
 }
