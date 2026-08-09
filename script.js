@@ -1,21 +1,67 @@
 // Header scroll state
 const header = document.getElementById('siteHeader');
+let scrollTicking = false;
 window.addEventListener('scroll', () => {
-  header.classList.toggle('scrolled', window.scrollY > 40);
+  if (scrollTicking) return;
+  scrollTicking = true;
+  window.requestAnimationFrame(() => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+    document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
+    scrollTicking = false;
+  });
+}, { passive: true });
+
+// Opening animation
+const openingScreen = document.getElementById('openingScreen');
+window.addEventListener('load', () => {
+  openingScreen?.classList.add('ready');
 });
+
+// Typewriter text for the hero introduction
+const writerTargets = [
+  { element: document.querySelector('.writer-kicker'), delay: 5_200, speed: 75 },
+  { element: document.querySelector('.writer-text'), delay: 5_700, speed: 22 }
+];
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  writerTargets.forEach(({ element, delay, speed }) => {
+    if (!element) return;
+    const fullText = element.textContent.trim();
+    element.textContent = '';
+    element.classList.add('typing');
+    let characterIndex = 0;
+    const typeNextCharacter = () => {
+      element.textContent = fullText.slice(0, characterIndex);
+      characterIndex += 1;
+      if (characterIndex <= fullText.length) window.setTimeout(typeNextCharacter, speed);
+      else element.classList.remove('typing');
+    };
+    window.setTimeout(typeNextCharacter, delay);
+  });
+}
 
 // Mobile menu
 const menuToggle = document.getElementById('menuToggle');
 const navLinks = document.getElementById('navLinks');
 menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-function closeMenu(){ navLinks.classList.remove('open'); }
+menuToggle.addEventListener('click', () => {
+  const isOpen = navLinks.classList.contains('open');
+  menuToggle.setAttribute('aria-expanded', String(isOpen));
+});
+function closeMenu(){
+  navLinks.classList.remove('open');
+  menuToggle.setAttribute('aria-expanded', 'false');
+}
 
 // Scroll reveal
 const revealEls = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
 }, { threshold: 0.15 });
-revealEls.forEach(el => io.observe(el));
+revealEls.forEach((el, index) => {
+  el.style.setProperty('--reveal-delay', `${(index % 4) * 90}ms`);
+  el.dataset.reveal = ['up', 'left', 'right', 'scale'][index % 4];
+  io.observe(el);
+});
 
 // Portfolio filter
 const filterBtns = document.querySelectorAll('.filter-btn');
@@ -40,7 +86,7 @@ filterBtns.forEach(btn => {
   });
 });
 
-workImage.addEventListener('change', event => {
+workImage?.addEventListener('change', event => {
   const files = Array.from(event.target.files || []);
   const category = workCategory.value;
   const categoryLabel = category === 'desain' ? 'Desain Grafis' : 'Fotografi';
