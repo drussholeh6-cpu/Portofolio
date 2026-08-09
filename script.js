@@ -74,7 +74,20 @@ const uploadNote = document.getElementById('uploadNote');
 function applyPortfolioFilter(filter){
   const cards = document.querySelectorAll('#portfolioGrid .card');
   cards.forEach(c => {
-    c.style.display = (filter === 'all' || c.dataset.cat === filter) ? '' : 'none';
+    const shouldShow = filter === 'all' || c.dataset.cat === filter;
+    window.clearTimeout(c.filterHideTimer);
+    if (shouldShow) {
+      c.hidden = false;
+      c.classList.remove('filter-out');
+      c.classList.remove('filter-in');
+      window.requestAnimationFrame(() => c.classList.add('filter-in'));
+    } else {
+      c.classList.remove('filter-in');
+      c.classList.add('filter-out');
+      c.filterHideTimer = window.setTimeout(() => {
+        if (c.classList.contains('filter-out')) c.hidden = true;
+      }, 460);
+    }
   });
 }
 

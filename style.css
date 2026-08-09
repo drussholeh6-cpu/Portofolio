@@ -284,8 +284,11 @@ section{ position:relative; z-index:1; padding:140px 6vw; max-width:1240px; marg
 .card{
   position:relative; border-radius:3px; overflow:hidden; cursor:pointer;
   border:1px solid var(--line); background:var(--surface);
-  transition:transform .5s ease, border-color .5s ease;
+  transition:opacity .45s ease, transform .55s cubic-bezier(.2,.8,.2,1), border-color .5s ease;
 }
+.card.filter-out{ opacity:0; transform:scale(.94) translateY(14px); pointer-events:none; }
+.card.filter-in{ animation:filterCardIn .6s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes filterCardIn{ from{ opacity:0; transform:scale(.94) translateY(18px); } to{ opacity:1; transform:scale(1) translateY(0); } }
 .card:hover{ transform:translateY(-6px); border-color:var(--line-strong); }
 .card-thumb{
   aspect-ratio:4/5; position:relative; display:flex; align-items:center; justify-content:center;
@@ -368,15 +371,15 @@ footer .foot-star{ width:16px; height:16px; opacity:0.6; }
   .ach-item{ grid-template-columns:70px 1fr; }
   .ach-badge{ grid-column:1/-1; justify-self:start; margin-top:6px; }
   section{ padding:90px 6vw; }
-  .hero{ height:100svh; min-height:0; overflow:hidden; padding:86px 5vw 42px; }
-  .profile-hero{ width:122%; grid-template-columns:140px 1fr; gap:22px; align-items:start; transform:scale(.82); transform-origin:top center; }
-  .profile-photo-wrap{ max-width:140px; }
+  .hero{ min-height:100svh; overflow:visible; padding:86px 5vw 42px; }
+  .profile-hero{ width:min(680px,100%); grid-template-columns:190px minmax(0,1fr); gap:24px; align-items:start; transform:none; }
+  .profile-photo-wrap{ max-width:190px; }
   .hero-content{ display:flex; flex-direction:column; align-items:flex-start; }
   h1.name{ font-size:clamp(2.15rem,5vw,3.5rem); margin-bottom:14px; }
   .role-line{ gap:7px; margin-bottom:18px; }
   .role-line span{ font-size:.6rem; padding:5px 7px; }
-  .hero-desc{ max-width:360px; font-size:.72rem; line-height:1.35; margin-bottom:14px; }
-  .profile-meta{ position:absolute; left:5vw; right:5vw; bottom:14px; width:auto; grid-template-columns:repeat(4,1fr); row-gap:12px; margin-top:0; }
+  .hero-desc{ max-width:360px; font-size:.78rem; line-height:1.4; margin-bottom:14px; }
+  .profile-meta{ position:relative; left:auto; right:auto; bottom:auto; width:100%; grid-template-columns:repeat(2,minmax(0,1fr)); row-gap:18px; margin-top:32px; }
   .profile-meta strong{ font-size:.78rem; line-height:1.2; }
   .scroll-hint{ display:none; }
   .upload-panel{ align-items:flex-start; flex-direction:column; }
@@ -388,17 +391,17 @@ footer .foot-star{ width:16px; height:16px; opacity:0.6; }
   .logo{ font-size:.92rem; }
   .logo svg{ width:19px; height:19px; }
   .hero{ min-height:100svh; padding:92px 5vw 48px; }
-  .profile-hero{ display:grid; grid-template-columns:minmax(112px, .7fr) minmax(0, 1.3fr); align-items:center; gap:18px; }
-  .profile-photo-wrap{ width:100%; max-width:none; align-self:center; }
-  .hero-content{ width:100%; }
+  .profile-hero{ width:100%; display:flex; flex-direction:column; align-items:stretch; gap:20px; }
+  .profile-photo-wrap{ width:min(62vw,220px); max-width:none; align-self:center; }
+  .hero-content{ width:100%; min-width:0; }
   .hero .eyebrow-line{ width:28px; }
-  h1.name{ font-size:clamp(2.35rem,11vw,3.7rem); margin-bottom:16px; }
+  h1.name{ font-size:clamp(2.55rem,12vw,4rem); line-height:.94; margin-bottom:14px; letter-spacing:-.03em; }
   .role-line{ gap:5px; margin-bottom:15px; }
   .role-line span{ font-size:0.58rem; padding:4px 6px; }
-  .hero-desc{ font-size:.76rem; line-height:1.45; margin-bottom:18px; }
+  .hero-desc{ font-size:.72rem; line-height:1.4; margin-bottom:16px; min-height:5.6em; }
   .btn{ font-size:.64rem; padding:10px 12px; }
   .cta-row{ gap:7px; }
-  .profile-meta{ grid-template-columns:repeat(4,1fr); gap:8px; margin-top:30px; }
+  .profile-meta{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 12px; margin-top:28px; }
   .meta-label{ font-size:.5rem; letter-spacing:.06em; }
   .profile-meta strong{ font-size:.68rem; line-height:1.2; }
   .profile-meta strong i{ width:4px; height:4px; margin-right:2px; }
