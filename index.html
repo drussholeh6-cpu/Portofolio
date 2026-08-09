@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div class="bg-texture"></div>
+<div class="bg-texture"></div>  
 <div class="opening-screen" id="openingScreen" aria-label="Memuat portofolio">
   <div class="scan-loader" aria-hidden="true">
     <span class="scan-ring ring-outer"></span>
@@ -203,6 +203,10 @@
         <div class="ach-desc">Hai'ah Tahfidz Al-Qur'an UIN Malang</div>
       </div>
       <div class="ach-badge">Juara 1</div>
+      <button class="ach-proof" type="button" data-image="MBuh.JPG" data-caption="Dokumentasi kegiatan — HTQ Qur'anic Competition" aria-label="Buka bukti foto HTQ Qur'anic Competition">
+        <img src="MBuh.JPG" alt="Dokumentasi HTQ Qur'anic Competition">
+        <span class="proof-label">Bukti foto <b>↗</b></span>
+      </button>
     </div>
     <div class="ach-item reveal">
       <div class="ach-year">2025</div>
@@ -211,6 +215,10 @@
         <div class="ach-desc">Pusat Ma'had Al-Jami'ah UIN Malang</div>
       </div>
       <div class="ach-badge">Juara 2</div>
+      <button class="ach-proof" type="button" data-image="Profile.JPG" data-caption="Dokumentasi kegiatan — Cerdas Cermat MSAA Fest" aria-label="Buka bukti foto Cerdas Cermat MSAA Fest">
+        <img src="Profile.JPG" alt="Dokumentasi Cerdas Cermat MSAA Fest">
+        <span class="proof-label">Bukti foto <b>↗</b></span>
+      </button>
     </div>
     <div class="ach-item reveal">
       <div class="ach-year">2025</div>
@@ -219,14 +227,10 @@
         <div class="ach-desc">HMPS Integral Matematika UIN Malang</div>
       </div>
       <div class="ach-badge">Juara 3</div>
-    </div>
-    <div class="ach-item reveal">
-      <div class="ach-year">2025</div>
-      <div class="ach-main">
-        <div class="ach-title">Diterima di Program Studi Matematika, UIN Malang</div>
-        <div class="ach-desc">Mengawali perjalanan akademik di bidang matematika murni.</div>
-      </div>
-      <div class="ach-badge">Akademik</div>
+      <button class="ach-proof" type="button" data-image="Shofiy.JPG" data-caption="Dokumentasi kegiatan — Integral Festival" aria-label="Buka bukti foto Integral Festival">
+        <img src="Shofiy.JPG" alt="Dokumentasi Integral Festival">
+        <span class="proof-label">Bukti foto <b>↗</b></span>
+      </button>
     </div>
   </div>
 </section>
@@ -271,6 +275,14 @@
     <path d="M13 26V14l7 8 7-8v12" stroke="#c9a961" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
 </footer>
+
+<div class="proof-lightbox" id="proofLightbox" role="dialog" aria-modal="true" aria-label="Pratinjau bukti foto" hidden>
+  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Tutup bukti foto">×</button>
+  <figure>
+    <img id="lightboxImage" src="" alt="">
+    <figcaption id="lightboxCaption"></figcaption>
+  </figure>
+</div>
 
 <script src="script.js"></script>
 

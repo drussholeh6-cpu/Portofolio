@@ -99,6 +99,35 @@ filterBtns.forEach(btn => {
   });
 });
 
+// Achievement photo lightbox
+const proofLightbox = document.getElementById('proofLightbox');
+const lightboxImage = document.getElementById('lightboxImage');
+const lightboxCaption = document.getElementById('lightboxCaption');
+const lightboxClose = document.getElementById('lightboxClose');
+const proofButtons = document.querySelectorAll('.ach-proof');
+
+function closeProofLightbox(){
+  proofLightbox.hidden = true;
+  document.body.style.overflow = '';
+}
+proofButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    lightboxImage.src = button.dataset.image;
+    lightboxImage.alt = button.querySelector('img').alt;
+    lightboxCaption.textContent = button.dataset.caption;
+    proofLightbox.hidden = false;
+    document.body.style.overflow = 'hidden';
+    lightboxClose.focus();
+  });
+});
+lightboxClose.addEventListener('click', closeProofLightbox);
+proofLightbox.addEventListener('click', event => {
+  if (event.target === proofLightbox) closeProofLightbox();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !proofLightbox.hidden) closeProofLightbox();
+});
+
 workImage?.addEventListener('change', event => {
   const files = Array.from(event.target.files || []);
   const category = workCategory.value;
