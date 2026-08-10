@@ -398,15 +398,15 @@ footer .foot-star{ width:16px; height:16px; opacity:0.6; }
 @media (max-width: 880px){
   nav.links{
     top:84px; right:auto; height:auto; width:calc(100% - 20px); background:rgba(15,14,11,.97);
-    left:50%; transform:translate(-50%, -120%); flex-direction:row; justify-content:center; align-items:stretch; padding:5px;
-    transition:transform .45s ease; border:1px solid var(--line); gap:2px; overflow-x:auto; pointer-events:none;
+    left:50%; transform:translateX(-50%) !important; flex-direction:row; justify-content:center; align-items:stretch; padding:5px;
+    transition:none; border:1px solid var(--line); gap:2px; overflow-x:auto; pointer-events:auto;
   }
   nav.links::before{ display:none; }
   nav.links a{ min-width:0; width:auto; flex:1 1 0; padding:8px 3px 7px; font-size:.52rem; letter-spacing:.06em; }
   nav.links a::after{ left:50%; right:auto; bottom:-12px; transform:translateX(-50%); }
   nav.links a.active::after{ transform:translateX(-50%) translateY(2px); }
-  nav.links.open{ transform:translate(-50%, 0) !important; pointer-events:auto; }
-  .menu-toggle{ display:grid; }
+  nav.links.open{ transform:translateX(-50%) !important; }
+  .menu-toggle{ display:none; }
   .about-grid, .contact-wrap{ grid-template-columns:1fr; gap:44px; }
   .grid-portfolio{ grid-template-columns:repeat(2, 1fr); }
   .ach-item{ grid-template-columns:70px 1fr 120px; }
