@@ -52,6 +52,37 @@ function closeMenu(){
   menuToggle.setAttribute('aria-expanded', 'false');
 }
 
+// Keep the liquid highlight aligned with the section currently in view.
+const navItems = [...navLinks.querySelectorAll('a')];
+const navSections = navItems
+  .map(item => document.querySelector(item.getAttribute('href')))
+  .filter(Boolean);
+function moveLiquidHighlight(item){
+  if (window.innerWidth <= 880 || !item) return;
+  navLinks.style.setProperty('--liquid-x', `${item.offsetLeft - 6}px`);
+  navLinks.style.setProperty('--liquid-width', `${item.offsetWidth}px`);
+}
+function setActiveNav(item){
+  navItems.forEach(navItem => navItem.classList.toggle('active', navItem === item));
+  moveLiquidHighlight(item);
+}
+setActiveNav(navItems[0]);
+navItems.forEach(item => {
+  item.addEventListener('click', event => {
+    event.preventDefault();
+    closeMenu();
+    const targetSelector = item.getAttribute('href');
+    history.pushState(null, '', targetSelector);
+    document.querySelector(targetSelector)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+const navObserver = new IntersectionObserver(entries => {
+  const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+  if (visible) setActiveNav(navItems.find(item => item.getAttribute('href') === `#${visible.target.id}`));
+}, { rootMargin: '-28% 0px -58% 0px', threshold: [0.1, 0.35, 0.65] });
+navSections.forEach(section => navObserver.observe(section));
+window.addEventListener('resize', () => moveLiquidHighlight(navItems.find(item => item.classList.contains('active'))));
+
 // Scroll reveal
 const revealEls = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries) => {
