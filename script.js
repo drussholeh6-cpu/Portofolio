@@ -57,6 +57,9 @@ const navItems = [...navLinks.querySelectorAll('a')];
 const navSections = navItems
   .map(item => document.querySelector(item.getAttribute('href')))
   .filter(Boolean);
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let navigationTimer;
+let isNavigating = false;
 function moveLiquidHighlight(item){
   if (window.innerWidth <= 880 || !item) return;
   navLinks.style.setProperty('--liquid-x', `${item.offsetLeft - 6}px`);
@@ -72,16 +75,36 @@ navItems.forEach(item => {
     event.preventDefault();
     closeMenu();
     const targetSelector = item.getAttribute('href');
+    isNavigating = true;
+    window.clearTimeout(navigationTimer);
+    setActiveNav(item);
     history.pushState(null, '', targetSelector);
-    document.querySelector(targetSelector)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelector(targetSelector)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    navigationTimer = window.setTimeout(() => {
+      isNavigating = false;
+    }, reduceMotion ? 0 : 1200);
   });
 });
-const navObserver = new IntersectionObserver(entries => {
-  const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-  if (visible) setActiveNav(navItems.find(item => item.getAttribute('href') === `#${visible.target.id}`));
-}, { rootMargin: '-28% 0px -58% 0px', threshold: [0.1, 0.35, 0.65] });
-navSections.forEach(section => navObserver.observe(section));
-window.addEventListener('resize', () => moveLiquidHighlight(navItems.find(item => item.classList.contains('active'))));
+function updateActiveNav(){
+  if (isNavigating) return;
+  const anchorY = window.scrollY + header.getBoundingClientRect().height + 110;
+  let currentSection = navSections[0];
+  navSections.forEach(section => {
+    if (section.offsetTop <= anchorY) currentSection = section;
+  });
+  setActiveNav(navItems.find(item => item.getAttribute('href') === `#${currentSection.id}`));
+}
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+window.addEventListener('scrollend', () => {
+  window.clearTimeout(navigationTimer);
+  isNavigating = false;
+});
+window.addEventListener('resize', () => {
+  moveLiquidHighlight(navItems.find(item => item.classList.contains('active')));
+  updateActiveNav();
+});
+window.addEventListener('popstate', updateActiveNav);
+updateActiveNav();
 
 // Scroll reveal
 const revealEls = document.querySelectorAll('.reveal');
