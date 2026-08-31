@@ -521,7 +521,10 @@ footer .foot-star{ width:16px; height:16px; opacity:0.6; }
   nav.links.open{ transform:translateX(-50%) !important; }
   .menu-toggle{ display:none; }
   .about-grid, .contact-wrap{ grid-template-columns:1fr; gap:44px; }
-  .grid-portfolio{ grid-template-columns:repeat(2, 1fr); }
+  .grid-portfolio{ grid-template-columns:repeat(2, 1fr); gap:22px; }
+  .skill-grid{ grid-template-columns:repeat(3, minmax(0, 1fr)); gap:18px; }
+  .skill-card{ padding:20px 16px 18px; }
+  .skill-badge{ width:56px; height:56px; margin-bottom:14px; }
   .ach-item{ grid-template-columns:70px 1fr 120px; }
   .ach-badge{ grid-column:1/-1; justify-self:start; margin-top:6px; min-width:104px; }
   .ach-proof{ grid-column:3; grid-row:1 / span 2; width:120px; }
@@ -542,7 +545,16 @@ footer .foot-star{ width:16px; height:16px; opacity:0.6; }
   .upload-note{ text-align:left; }
 }
 @media (max-width: 560px){
-  .grid-portfolio{ grid-template-columns:1fr; }
+  section{ padding:70px 5vw; }
+  .section-head{ margin-bottom:32px; }
+  .section-num{ font-size:.65rem; }
+  .section-title{ font-size:clamp(1.5rem,6vw,2.2rem); }
+  .grid-portfolio{ grid-template-columns:1fr; gap:18px; }
+  .skill-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); gap:16px; }
+  .skill-card{ padding:18px 14px 16px; }
+  .skill-badge{ width:52px; height:52px; margin-bottom:12px; }
+  .skill-card h3{ font-size:1rem; margin-bottom:6px; }
+  .skill-tags span{ font-size:.5rem; padding:4px 6px; }
   .logo{ font-size:.92rem; }
   .logo svg{ width:19px; height:19px; }
   .hero{ min-height:100svh; padding:92px 5vw 48px; }
@@ -584,6 +596,10 @@ footer .foot-star{ width:16px; height:16px; opacity:0.6; }
   .role-line span{ font-size:.62rem; padding:5px 8px; }
   .hero-desc{ max-width:100%; font-size:.8rem; line-height:1.45; }
   .profile-meta{ width:100%; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 12px; margin-top:28px; }
+  .filter-row{ gap:8px; margin-bottom:32px; }
+  .filter-btn{ padding:8px 12px; font-size:.7rem; }
+  .contact-list{ gap:12px; }
+  .contact-list a{ font-size:.85rem; }
 }
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
