@@ -433,8 +433,8 @@ section{ position:relative; z-index:1; padding:140px 6vw; max-width:1240px; marg
 .card-tag{ font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; display:block;}
 .card-title{ font-family:var(--font-display); font-size:1.15rem; color:var(--ivory); }
 .card-year{ color:var(--muted); font-size:0.78rem; margin-top:4px; }
-.card[data-cat="desain"] .card-thumb{ background:linear-gradient(145deg, #1c1912, #241f16); }
-.card[data-cat="foto"] .card-thumb{ background:linear-gradient(145deg, #12160f, #1a2118); }
+.card[data-cat="desain"] .card-thumb{ background:linear-gradient(145deg, #2a1f17, #3d2817); }
+.card[data-cat="foto"] .card-thumb{ background:linear-gradient(145deg, #1f1410, #2d1f15); }
 
 /* ---------- PRESTASI ---------- */
 .ach-list{ border-top:1px solid var(--line); }
