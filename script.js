@@ -1,3 +1,24 @@
+// Custom cursor
+const customCursor = document.querySelector('.custom-cursor');
+if (customCursor && !window.matchMedia('(pointer: coarse)').matches) {
+  const hideCursor = () => customCursor.style.opacity = '0';
+  const showCursor = () => customCursor.style.opacity = '1';
+
+  window.addEventListener('pointermove', event => {
+    customCursor.style.left = `${event.clientX}px`;
+    customCursor.style.top = `${event.clientY}px`;
+    showCursor();
+  });
+
+  document.addEventListener('pointerleave', hideCursor);
+  document.addEventListener('pointerenter', showCursor);
+
+  document.querySelectorAll('a, button, input, textarea, .profile-photo-frame, .ach-proof, .filter-btn').forEach(element => {
+    element.addEventListener('mouseenter', () => customCursor.classList.add('active'));
+    element.addEventListener('mouseleave', () => customCursor.classList.remove('active'));
+  });
+}
+
 // Header scroll state
 const header = document.getElementById('siteHeader');
 let scrollTicking = false;
