@@ -3,36 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mukhamad Badrus Sholeh — Graphic Desainer</title>
+<title>Mukhamad Badrus Sholeh — Desainer Grafis & Fotografer</title>
 <link rel="icon" type="image/png" href="Foto/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Space+Grotesk:wght@300;400;500;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=2.0">
 </head>
 <body>
-<div class="custom-cursor" aria-hidden="true"></div>
 
-<div class="bg-texture"></div>  
+<!-- Custom Luxury Cursor -->
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+<!-- Background 3D & Ambient Texture -->
+<div class="bg-texture" aria-hidden="true"></div>  
+<canvas id="bg3dCanvas" aria-hidden="true"></canvas>
+
+<!-- Opening Screen: Radar Map & Magnifying Glass Location Finder -->
 <div class="opening-screen" id="openingScreen" aria-label="Memuat portofolio">
-  <div class="scan-loader" aria-hidden="true">
-    <span class="scan-ring ring-outer"></span>
-    <span class="scan-ring ring-middle"></span>
-    <span class="scan-ring ring-inner"></span>
-    <span class="scan-crosshair"></span>
-    <span class="scan-sweep"></span>
-    <i class="scan-point point-one"></i>
-    <i class="scan-point point-two"></i>
+  <div class="map-grid-bg" aria-hidden="true">
+    <div class="map-radar-rings"></div>
+    <div class="map-radar-sweep"></div>
+    <div class="map-cross-axis"></div>
   </div>
-  <p><span>SCANNING</span> /Portofolio-Badrus</p>
+  
+  <div class="magnifier-stage">
+    <!-- Location Pin / Target Found Pulse -->
+    <div class="location-pin" id="locationPin" aria-hidden="true">
+      <div class="pin-pulse"></div>
+      <div class="pin-pulse-2"></div>
+      <div class="pin-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+        </svg>
+      </div>
+      <span class="pin-tag">MALANG // ID</span>
+    </div>
+
+    <!-- Moving Magnifying Glass with Lens & Reticle -->
+    <div class="magnifier-lens" id="magnifierLens" aria-hidden="true">
+      <div class="lens-rim"></div>
+      <div class="lens-glass">
+        <div class="lens-reticle"></div>
+        <div class="lens-scan-beam"></div>
+        <div class="lens-reflection"></div>
+      </div>
+      <div class="lens-handle"></div>
+    </div>
+  </div>
+
+  <!-- HUD Status & Coordinates -->
+  <div class="opening-hud">
+    <div class="hud-badge">GPS TRACKING // PORTFOLIO 2026</div>
+    <h2 class="opening-title">MUKHAMAD BADRUS SHOLEH</h2>
+    <div class="hud-coords" id="hudCoords">GPS: -7.9839° S, 112.6214° E</div>
+    <div class="opening-terminal" id="openingTerminal" aria-live="polite">
+      <span class="t-text" id="terminalText">MENCARI KOORDINAT LOKASI...</span>
+    </div>
+    <div class="opening-progress-wrap">
+      <div class="opening-bar">
+        <div class="opening-fill" id="openingFill"></div>
+      </div>
+      <div class="opening-meta">
+        <span class="o-sub" id="openingSub">RADAR: MEMINDAI AREA MALANG</span>
+        <span class="opening-counter" id="openingCounter">00%</span>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" class="opening-skip" id="openingSkip" aria-label="Lewati intro">
+    LEWATI INTRO <span class="skip-key">[ESC]</span>
+  </button>
 </div>
 
+<!-- Header -->
 <header id="siteHeader">
   <a href="#top" class="logo">
     <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="20" cy="20" r="17.5" stroke="#c9a961" stroke-width=".8"/>
-      <circle cx="20" cy="20" r="13.5" stroke="#c9a961" stroke-width=".45" opacity=".65"/>
-      <path d="M13 26V14l7 8 7-8v12" stroke="#c9a961" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="20" cy="20" r="17.5" stroke="#d9b065" stroke-width=".8"/>
+      <circle cx="20" cy="20" r="13.5" stroke="#d9b065" stroke-width=".45" opacity=".65"/>
+      <path d="M13 26V14l7 8 7-8v12" stroke="#d9b065" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     Mukhamad Badrus Sholeh
   </a>
@@ -45,6 +96,7 @@
   </button>
 </header>
 
+<!-- Floating Liquid Nav -->
 <nav class="links" id="navLinks" aria-label="Navigasi utama">
   <a href="#top" onclick="closeMenu()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z"/></svg></span><span>Beranda</span></a>
   <a href="#tentang" onclick="closeMenu()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0M3 4h2M19 4h2"/></svg></span><span>Tentang</span></a>
@@ -54,6 +106,7 @@
   <a href="#kontak" onclick="closeMenu()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4V5Z"/><path d="M8 9h8M8 12h5"/></svg></span><span>Kontak</span></a>
 </nav>
 
+<!-- Hero Section -->
 <section class="hero" id="top">
   <div class="profile-hero">
     <div class="profile-photo-wrap">
@@ -88,6 +141,7 @@
   <div class="scroll-hint"><span>Gulir</span><div class="line"></div></div>
 </section>
 
+<!-- Tentang Section -->
 <section id="tentang">
   <div class="section-head reveal">
     <span class="section-num">01 — Tentang</span>
@@ -107,6 +161,7 @@
   </div>
 </section>
 
+<!-- Karya Section (Neat 6-Item Grid with Lightbox) -->
 <section id="karya">
   <div class="section-head reveal">
     <span class="section-num">02 — Karya</span>
@@ -117,141 +172,196 @@
     <button class="filter-btn" data-filter="desain">Desain Grafis</button>
     <button class="filter-btn" data-filter="foto">Fotografi</button>
   </div>
+  
   <div class="grid-portfolio" id="portfolioGrid">
 
-    <div class="card reveal" data-cat="foto">
+    <!-- Item 1: Foto -->
+    <div class="card reveal" data-cat="foto" data-image="Foto/Difani.JPG" data-caption="Potret Makrab Phinix — Human Interest (2026)">
       <div class="card-thumb">
-        <img src="Foto/Difani.JPG" alt="Potret Makrab Phinix" onerror="this.onerror=null; this.src='Foto/Difani.JPG';">
-        <span class="cat-icon">Human Interest</span>
+        <img src="Foto/Difani.JPG" alt="Potret Makrab Phinix" loading="lazy">
+        <span class="cat-pill">Fotografi</span>
+        <div class="card-overlay-btn"><span>Lihat Foto ↗</span></div>
       </div>
       <div class="card-body">
-        <span class="card-tag">Fotografi</span>
-        <div class="card-title">Potret Makrab Phinix</div>
-        <div class="card-year">2026</div>
+        <span class="card-tag">Human Interest</span>
+        <h3 class="card-title">Potret Makrab Phinix</h3>
+        <div class="card-meta">
+          <span class="card-year">2026</span>
+          <span class="card-type-label">Foto Portrait</span>
+        </div>
       </div>
     </div>
 
-    <div class="card reveal" data-cat="desain">
+    <!-- Item 2: Desain -->
+    <div class="card reveal" data-cat="desain" data-image="Foto/STOP SCROLL.png" data-caption="Infografis Stop Scroll — Poster & Media Edukasi (2026)">
       <div class="card-thumb">
-        <img src="Foto/STOP SCROLL.png" alt="Infografis" onerror="this.onerror=null; this.src='Foto/STOP SCROLL.png';">
-        <span class="cat-icon">Poster & Media</span>
+        <img src="Foto/STOP SCROLL.png" alt="Infografis Stop Scroll" loading="lazy">
+        <span class="cat-pill">Desain Grafis</span>
+        <div class="card-overlay-btn"><span>Lihat Desain ↗</span></div>
       </div>
       <div class="card-body">
-        <span class="card-tag">Desain Grafis</span>
-        <div class="card-title">Infografis</div>
-        <div class="card-year">2026</div>
+        <span class="card-tag">Poster & Media</span>
+        <h3 class="card-title">Infografis Stop Scroll</h3>
+        <div class="card-meta">
+          <span class="card-year">2026</span>
+          <span class="card-type-label">Social Infographics</span>
+        </div>
       </div>
     </div>
 
-    <div class="card reveal" data-cat="foto">
+    <!-- Item 3: Foto -->
+    <div class="card reveal" data-cat="foto" data-image="Foto/Kak Fai.JPG" data-caption="Potret Kota Lama — Arsitektur & Street Photography (2026)">
       <div class="card-thumb">
-        <img src="Foto/Kak Fai.JPG" alt="Potret Kota Lama" onerror="this.onerror=null; this.src='Foto/Kak Fai.JPG';">
-        <span class="cat-icon">Arsitektur</span>
+        <img src="Foto/Kak Fai.JPG" alt="Potret Kota Lama" loading="lazy">
+        <span class="cat-pill">Fotografi</span>
+        <div class="card-overlay-btn"><span>Lihat Foto ↗</span></div>
       </div>
       <div class="card-body">
-        <span class="card-tag">Fotografi</span>
-        <div class="card-title">Potret Kota Lama</div>
-        <div class="card-year">2026</div>
+        <span class="card-tag">Arsitektur</span>
+        <h3 class="card-title">Potret Kota Lama</h3>
+        <div class="card-meta">
+          <span class="card-year">2026</span>
+          <span class="card-type-label">Street Architecture</span>
+        </div>
       </div>
     </div>
 
-    <div class="card reveal" data-cat="desain">
+    <!-- Item 4: Desain -->
+    <div class="card reveal" data-cat="desain" data-image="Foto/Portofolio.png" data-caption="Visual Identitas Portofolio — Branding & Ilustrasi (2026)">
       <div class="card-thumb">
-        <img src="Foto/Portofolio.png" alt="Desain Portofolio" onerror="this.onerror=null; this.src='Foto/Portofolio.png';">
-        <span class="cat-icon">Ilustrasi</span>
+        <img src="Foto/Portofolio.png" alt="Desain Portofolio" loading="lazy">
+        <span class="cat-pill">Desain Grafis</span>
+        <div class="card-overlay-btn"><span>Lihat Desain ↗</span></div>
       </div>
       <div class="card-body">
-        <span class="card-tag">Desain Grafis</span>
-        <div class="card-title">Desain Portofolio</div>
-        <div class="card-year">2026</div>
+        <span class="card-tag">Branding</span>
+        <h3 class="card-title">Desain Portofolio</h3>
+        <div class="card-meta">
+          <span class="card-year">2026</span>
+          <span class="card-type-label">Visual Identity</span>
+        </div>
       </div>
     </div>
 
-    <div class="card reveal" data-cat="foto">
+    <!-- Item 5: Foto -->
+    <div class="card reveal" data-cat="foto" data-image="Foto/Hanif.JPG" data-caption="Potret Malam Makrab Phinix — Momen & Lighting (2026)">
       <div class="card-thumb">
-        <img src="Foto/Hanif.JPG" alt="Potret Makrab Phinix" onerror="this.onerror=null; this.src='Foto/Hanif.JPG';">
-        <span class="cat-icon">Momen</span>
+        <img src="Foto/Hanif.JPG" alt="Potret Malam Makrab Phinix" loading="lazy">
+        <span class="cat-pill">Fotografi</span>
+        <div class="card-overlay-btn"><span>Lihat Foto ↗</span></div>
       </div>
       <div class="card-body">
-        <span class="card-tag">Fotografi</span>
-        <div class="card-title">Potret Makrab Phinix</div>
-        <div class="card-year">2026</div>
+        <span class="card-tag">Momen</span>
+        <h3 class="card-title">Potret Makrab Phinix</h3>
+        <div class="card-meta">
+          <span class="card-year">2026</span>
+          <span class="card-type-label">Night Portrait</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 6: Desain -->
+    <div class="card reveal" data-cat="desain" data-image="Foto/Pamflet Ifest.png" data-caption="Pamflet Integral Festival — Event & Media Promosi (2026)">
+      <div class="card-thumb">
+        <img src="Foto/Pamflet Ifest.png" alt="Pamflet Integral Festival" loading="lazy">
+        <span class="cat-pill">Desain Grafis</span>
+        <div class="card-overlay-btn"><span>Lihat Desain ↗</span></div>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Poster Acara</span>
+        <h3 class="card-title">Pamflet Integral Festival</h3>
+        <div class="card-meta">
+          <span class="card-year">2026</span>
+          <span class="card-type-label">Event Promotion</span>
+        </div>
       </div>
     </div>
 
   </div>
 </section>
 
+<!-- Skill Section -->
 <section id="skill">
   <div class="section-head reveal">
     <span class="section-num">03 — Skills</span>
     <h2 class="section-title">Software & <em>bahasa pemrograman</em></h2>
   </div>
 
-  <div class="skill-grid reveal">
-    <div class="skill-card skill-card-equal">
-      <div class="skill-badge"><img src="Logo/Adobe-Photoshop-Logo.png" alt="Photoshop logo" loading="lazy"></div>
-      <h3>Photoshop</h3>
-      <div class="skill-tags"><span>Retouch</span><span>Poster</span><span>Layout</span></div>
+  <div class="skill-carousel-wrap reveal">
+    <button type="button" class="skill-nav skill-nav-prev" id="skillPrev" aria-label="Skill sebelumnya">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <div class="skill-grid" id="skillGrid">
+      <div class="skill-card">
+        <div class="skill-badge"><img src="Logo/Adobe-Photoshop-Logo.png" alt="Photoshop logo" loading="lazy"></div>
+        <h3>Photoshop</h3>
+        <div class="skill-tags"><span>Retouch</span><span>Poster</span><span>Layout</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-badge"><img src="Logo/canva-transparent-icon-free-png.webp" alt="Canva logo" loading="lazy"></div>
+        <h3>Canva</h3>
+        <div class="skill-tags"><span>Social</span><span>Template</span><span>Branding</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-badge"><img src="Logo/CapCut-Symbol.png" alt="CapCut logo" loading="lazy"></div>
+        <h3>CapCut</h3>
+        <div class="skill-tags"><span>Video</span><span>Cut</span><span>Reels</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-badge"><img src="Logo/vscode-logo.png" alt="VS Code logo" loading="lazy"></div>
+        <h3>VS Code</h3>
+        <div class="skill-tags"><span>Code</span><span>Debug</span><span>Web</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-badge"><img src="Logo/google colab.png" alt="Google Colab logo" loading="lazy"></div>
+        <h3>Google Colab</h3>
+        <div class="skill-tags"><span>Notebook</span><span>AI</span><span>Python</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-badge"><img src="Logo/gemini-color.png" alt="Gemini logo" loading="lazy"></div>
+        <h3>Gemini</h3>
+        <div class="skill-tags"><span>AI</span><span>Prompt</span><span>Ide</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-badge"><img src="Logo/GitHub-Logo.png" alt="GitHub logo" loading="lazy"></div>
+        <h3>GitHub</h3>
+        <div class="skill-tags"><span>Repo</span><span>Git</span><span>Deploy</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-badge"><img src="Logo/OIP (1).webp" alt="Vercel logo" loading="lazy"></div>
+        <h3>Vercel</h3>
+        <div class="skill-tags"><span>Deploy</span><span>Web</span><span>App</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-badge"><img src="Logo/html-logo.png" alt="HTML logo" loading="lazy"></div>
+        <h3>HTML</h3>
+        <div class="skill-tags"><span>Structure</span><span>Semantik</span><span>Page</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-badge"><img src="Logo/OIP.webp" alt="CSS logo" loading="lazy"></div>
+        <h3>CSS</h3>
+        <div class="skill-tags"><span>Styling</span><span>UI</span><span>Responsive</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-badge"><img src="Logo/png-javascript-badge-picture-8.png" alt="JavaScript logo" loading="lazy"></div>
+        <h3>JavaScript</h3>
+        <div class="skill-tags"><span>Logic</span><span>DOM</span><span>Interaksi</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-badge"><img src="Logo/Python-logo-notext.svg.webp" alt="Python logo" loading="lazy"></div>
+        <h3>Python</h3>
+        <div class="skill-tags"><span>Automation</span><span>AI</span><span>Data</span></div>
+      </div>
     </div>
-    <div class="skill-card skill-card-equal">
-      <div class="skill-badge"><img src="Logo/canva-transparent-icon-free-png.webp" alt="Canva logo" loading="lazy"></div>
-      <h3>Canva</h3>
-      <div class="skill-tags"><span>Social</span><span>Template</span><span>Branding</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-badge"><img src="Logo/CapCut-Symbol.png" alt="CapCut logo" loading="lazy"></div>
-      <h3>CapCut</h3>
-      <div class="skill-tags"><span>Video</span><span>Cut</span><span>Reels</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-badge"><img src="Logo/vscode-logo.png" alt="VS Code logo" loading="lazy"></div>
-      <h3>VS Code</h3>
-      <div class="skill-tags"><span>Code</span><span>Debug</span><span>Web</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-badge"><img src="Logo/google colab.png" alt="Google Colab logo" loading="lazy"></div>
-      <h3>Google Colab</h3>
-      <div class="skill-tags"><span>Notebook</span><span>AI</span><span>Python</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-badge"><img src="Logo/gemini-color.png" alt="Gemini logo" loading="lazy"></div>
-      <h3>Gemini</h3>
-      <div class="skill-tags"><span>AI</span><span>Prompt</span><span>Ide</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-badge"><img src="Logo/GitHub-Logo.png" alt="GitHub logo" loading="lazy"></div>
-      <h3>GitHub</h3>
-      <div class="skill-tags"><span>Repo</span><span>Git</span><span>Deploy</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-badge"><img src="Logo/OIP (1).webp" alt="Vercel logo" loading="lazy"></div>
-      <h3>Vercel</h3>
-      <div class="skill-tags"><span>Deploy</span><span>Web</span><span>App</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-badge"><img src="Logo/html-logo.png" alt="HTML logo" loading="lazy"></div>
-      <h3>HTML</h3>
-      <div class="skill-tags"><span>Structure</span><span>Semantik</span><span>Page</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-badge"><img src="Logo/OIP.webp" alt="CSS logo" loading="lazy"></div>
-      <h3>CSS</h3>
-      <div class="skill-tags"><span>Styling</span><span>UI</span><span>Responsive</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-badge"><img src="Logo/png-javascript-badge-picture-8.png" alt="JavaScript logo" loading="lazy"></div>
-      <h3>JavaScript</h3>
-      <div class="skill-tags"><span>Logic</span><span>DOM</span><span>Interaksi</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-badge"><img src="Logo/Python-logo-notext.svg.webp" alt="Python logo" loading="lazy"></div>
-      <h3>Python</h3>
-      <div class="skill-tags"><span>Automation</span><span>AI</span><span>Data</span></div>
-    </div>
+
+    <button type="button" class="skill-nav skill-nav-next" id="skillNext" aria-label="Skill berikutnya">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
   </div>
 </section>
 
+<!-- Prestasi Section -->
 <section id="prestasi">
   <div class="section-head reveal">
     <span class="section-num">04 — Prestasi</span>
@@ -297,9 +407,10 @@
   </div>
 </section>
 
+<!-- Kontak Section -->
 <section id="kontak">
   <div class="section-head reveal">
-    <span class="section-num">04 — Kontak</span>
+    <span class="section-num">05 — Kontak</span>
     <h2 class="section-title">Mari <em>berkolaborasi</em></h2>
   </div>
   <div class="contact-wrap">
@@ -325,30 +436,32 @@
         <label for="fmsg">Pesan</label>
         <textarea id="fmsg" required placeholder="Ceritakan proyekmu..."></textarea>
       </div>
-      <button type="submit" class="send-btn">Kirim Pesan</button>
+      <button type="submit" class="send-btn">Kirim Pesan <span>↗</span></button>
       <p class="form-status" id="formStatus" role="status" aria-live="polite" hidden>Terima kasih, pesan Anda sudah dikirim.</p>
     </form>
   </div>
 </section>
 
+<!-- Footer -->
 <footer>
-  <span>© 2026 Mukhamad Badrus Sholeh. Web Developer</span>
+  <span>© 2026 Mukhamad Badrus Sholeh. Web Developer & Visual Artist</span>
   <svg class="foot-star" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="20" cy="20" r="17.5" stroke="#c9a961" stroke-width=".8"/>
-    <circle cx="20" cy="20" r="13.5" stroke="#c9a961" stroke-width=".45" opacity=".65"/>
-    <path d="M13 26V14l7 8 7-8v12" stroke="#c9a961" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="20" cy="20" r="17.5" stroke="#d9b065" stroke-width=".8"/>
+    <circle cx="20" cy="20" r="13.5" stroke="#d9b065" stroke-width=".45" opacity=".65"/>
+    <path d="M13 26V14l7 8 7-8v12" stroke="#d9b065" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
 </footer>
 
-<div class="proof-lightbox" id="proofLightbox" role="dialog" aria-modal="true" aria-label="Pratinjau bukti foto" hidden>
-  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Tutup bukti foto">×</button>
+<!-- Lightbox Modal for Karya & Prestasi -->
+<div class="proof-lightbox" id="proofLightbox" role="dialog" aria-modal="true" aria-label="Pratinjau gambar" hidden>
+  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Tutup pratinjau">×</button>
   <figure>
     <img id="lightboxImage" src="" alt="">
     <figcaption id="lightboxCaption"></figcaption>
   </figure>
 </div>
 
-<script src="script.js"></script>
+<script src="script.js?v=2.0"></script>
 
 </body>
 </html>
