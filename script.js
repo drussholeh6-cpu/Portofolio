@@ -64,6 +64,258 @@ if (cursorDot && cursorRing && !window.matchMedia('(pointer: coarse)').matches) 
 }
 
 /* =========================================================
+   ELEGANT CINEMATIC AUDIO ENGINE
+   Pure Web Audio API — Musical · Harmonic · Zero-latency
+   ========================================================= */
+const SFX = (() => {
+  let ctx = null;
+  let ambientNode = null;
+
+  /* ── Init AudioContext ── */
+  function getCtx() {
+    if (!ctx) {
+      try { ctx = new (window.AudioContext || window.webkitAudioContext)(); }
+      catch(e) { return null; }
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+
+  /* ── Simulated Reverb (feedback delay network) ── */
+  function createReverb(c, decaySec = 2.2, mix = 0.38) {
+    const wet  = c.createGain();
+    const dry  = c.createGain();
+    const out  = c.createGain();
+    wet.gain.value = mix;
+    dry.gain.value = 1 - mix * 0.4;
+
+    // Two comb-filter style delay lines for shimmer
+    const delays  = [0.029, 0.037, 0.049, 0.061].map(t => {
+      const d = c.createDelay(0.2);
+      const g = c.createGain();
+      d.delayTime.value = t;
+      g.gain.value = 0.35;
+      d.connect(g); g.connect(d);   // feedback
+      wet.connect(d);
+      d.connect(out);
+      return d;
+    });
+
+    dry.connect(out);
+    const node = { input: dry, wet, out };
+    return node;
+  }
+
+  /* ── Utility: play a pitched sine tone with soft envelope ── */
+  function tone(c, dest, freq, vol, attack, hold, release, startOffset = 0) {
+    const osc = c.createOscillator();
+    const env = c.createGain();
+    const t   = c.currentTime + startOffset;
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    env.gain.setValueAtTime(0.0001, t);
+    env.gain.linearRampToValueAtTime(vol, t + attack);
+    env.gain.setValueAtTime(vol, t + attack + hold);
+    env.gain.exponentialRampToValueAtTime(0.0001, t + attack + hold + release);
+    osc.connect(env); env.connect(dest);
+    osc.start(t); osc.stop(t + attack + hold + release + 0.05);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     1. AMBIENT HUM — soft evolving pad, starts at opening load
+     ══════════════════════════════════════════════════════════ */
+  function startAmbientPad() {
+    const c = getCtx(); if (!c) return;
+    if (ambientNode) return; // already running
+
+    const master = c.createGain();
+    master.gain.setValueAtTime(0, c.currentTime);
+    master.gain.linearRampToValueAtTime(0.045, c.currentTime + 3.5);
+    master.connect(c.destination);
+
+    // Root + fifth + octave chord = Dm ambient
+    [[73.4, 0], [110, 0.3], [146.8, 0.7], [220, 1.2], [293.7, 2.0]].forEach(([freq, delay]) => {
+      const osc = c.createOscillator();
+      const lfo = c.createOscillator();
+      const lfoGain = c.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      // Subtle frequency vibrato for organic feel
+      lfo.type = 'sine';
+      lfo.frequency.value = 0.3 + Math.random() * 0.2;
+      lfoGain.gain.value = freq * 0.003;
+      lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+      osc.connect(master);
+      osc.start(c.currentTime + delay);
+      lfo.start(c.currentTime + delay);
+    });
+
+    ambientNode = master;
+  }
+
+  function stopAmbientPad(fadeSec = 1.8) {
+    if (!ambientNode || !ctx) return;
+    ambientNode.gain.setValueAtTime(ambientNode.gain.value, ctx.currentTime);
+    ambientNode.gain.linearRampToValueAtTime(0, ctx.currentTime + fadeSec);
+    ambientNode = null;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     2. CRYSTAL CHIME — ethereal bell tone (replaces radar ping)
+        Plays a delicate D minor bell chord with long decay
+     ══════════════════════════════════════════════════════════ */
+  function crystalChime() {
+    const c = getCtx(); if (!c) return;
+
+    const rev = createReverb(c, 3.0, 0.45);
+    rev.out.connect(c.destination);
+
+    // Bell partials: fundamental + inharmonic overtones (like a real bell)
+    const partials = [
+      { f: 587.3, v: 0.22, a: 0.005, h: 0.02, r: 2.8 },   // D5
+      { f: 880.0, v: 0.14, a: 0.003, h: 0.01, r: 2.2 },   // A5
+      { f: 1174.6,v: 0.09, a: 0.002, h: 0.01, r: 1.6 },   // D6
+      { f: 1479.9,v: 0.05, a: 0.001, h: 0.01, r: 1.1 },   // F#6 (inharmonic)
+      { f: 2093.0,v: 0.03, a: 0.001, h: 0.01, r: 0.8 },   // C7 shimmer
+    ];
+
+    partials.forEach(({ f, v, a, h, r }) => {
+      tone(c, rev.input, f, v, a, h, r);
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     3. WHISPER SWEEP — gentle ambient movement (replaces scan blip)
+        Soft pad swell suggesting the magnifier drifting
+     ══════════════════════════════════════════════════════════ */
+  function whisperSweep(stepIdx = 0) {
+    const c = getCtx(); if (!c) return;
+
+    // Each waypoint has a different root — a musical journey
+    const rootFreqs = [293.7, 349.2, 392.0, 523.3]; // D4 → F4 → G4 → C5
+    const root = rootFreqs[Math.min(stepIdx, rootFreqs.length - 1)];
+
+    const master = c.createGain();
+    const filt   = c.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.setValueAtTime(600,  c.currentTime);
+    filt.frequency.linearRampToValueAtTime(2200, c.currentTime + 0.6);
+    filt.frequency.exponentialRampToValueAtTime(400, c.currentTime + 1.8);
+    filt.Q.value = 1.2;
+    master.connect(filt); filt.connect(c.destination);
+
+    // Soft fifth interval pad swell
+    [[root, 0.12, 0, 0.55, 1.1], [root * 1.5, 0.07, 0.05, 0.4, 0.9]].forEach(([f, v, off, h, r]) => {
+      tone(c, master, f, v, 0.08, h, r, off);
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     4. GOLDEN LOCK — luxury chord swell (replaces lock-on)
+        Rich orchestral moment: Dm maj7 chord bloom + deep bass
+     ══════════════════════════════════════════════════════════ */
+  function goldenLock() {
+    const c = getCtx(); if (!c) return;
+
+    const rev = createReverb(c, 3.5, 0.5);
+    rev.out.connect(c.destination);
+
+    // Majestic Dm maj7 chord bloom (D F A C#)
+    const chordTones = [
+      { f: 146.8, v: 0.28, a: 0.04, h: 0.8, r: 3.2, delay: 0.00 }, // D3 bass
+      { f: 220.0, v: 0.20, a: 0.06, h: 0.7, r: 2.8, delay: 0.05 }, // A3
+      { f: 293.7, v: 0.18, a: 0.08, h: 0.6, r: 2.5, delay: 0.10 }, // D4
+      { f: 349.2, v: 0.14, a: 0.10, h: 0.5, r: 2.2, delay: 0.16 }, // F4
+      { f: 440.0, v: 0.12, a: 0.12, h: 0.4, r: 2.0, delay: 0.22 }, // A4
+      { f: 554.4, v: 0.08, a: 0.14, h: 0.3, r: 1.8, delay: 0.28 }, // C#5 — maj7 colour
+      { f: 587.3, v: 0.06, a: 0.16, h: 0.2, r: 1.5, delay: 0.34 }, // D5 top shimmer
+    ];
+
+    chordTones.forEach(({ f, v, a, h, r, delay }) => {
+      tone(c, rev.input, f, v, a, h, r, delay);
+    });
+
+    // Sub-bass pulse (cinema low-end)
+    const sub = c.createOscillator();
+    const subEnv = c.createGain();
+    sub.type = 'sine';
+    sub.frequency.setValueAtTime(73.4, c.currentTime);    // D2
+    sub.frequency.linearRampToValueAtTime(69.3, c.currentTime + 1.2); // slight drop
+    subEnv.gain.setValueAtTime(0, c.currentTime);
+    subEnv.gain.linearRampToValueAtTime(0.35, c.currentTime + 0.08);
+    subEnv.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 2.5);
+    sub.connect(subEnv); subEnv.connect(c.destination);
+    sub.start(c.currentTime); sub.stop(c.currentTime + 2.6);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     5. GRAND REVEAL — orchestral swell + angelic shimmer
+        A full major chord rise as the site opens
+     ══════════════════════════════════════════════════════════ */
+  function grandReveal() {
+    const c = getCtx(); if (!c) return;
+
+    stopAmbientPad(0.9);
+
+    const rev = createReverb(c, 4.0, 0.55);
+    rev.out.connect(c.destination);
+
+    // Rising D major resolution (D F# A D) — triumph
+    const riseTones = [
+      { f: 146.8, v: 0.30, a: 0.05, h: 1.2, r: 3.5, delay: 0.00 },
+      { f: 220.0, v: 0.22, a: 0.08, h: 1.0, r: 3.2, delay: 0.06 },
+      { f: 293.7, v: 0.18, a: 0.10, h: 0.9, r: 2.8, delay: 0.12 },
+      { f: 369.9, v: 0.14, a: 0.13, h: 0.8, r: 2.6, delay: 0.18 }, // F#4
+      { f: 440.0, v: 0.11, a: 0.16, h: 0.7, r: 2.4, delay: 0.24 },
+      { f: 587.3, v: 0.08, a: 0.20, h: 0.5, r: 2.0, delay: 0.32 },
+      { f: 880.0, v: 0.05, a: 0.25, h: 0.3, r: 1.6, delay: 0.40 }, // top shimmer
+    ];
+    riseTones.forEach(({ f, v, a, h, r, delay }) => {
+      tone(c, rev.input, f, v, a, h, r, delay);
+    });
+
+    // Golden shimmer trail — cascading high sine arpegio
+    [0, 0.12, 0.24, 0.36, 0.48, 0.60].forEach((offset, i) => {
+      const shimmerFreqs = [1174.6, 1318.5, 1567.9, 1760.0, 2093.0, 2637.0];
+      tone(c, rev.input, shimmerFreqs[i], 0.04 - i * 0.005, 0.01, 0.05, 1.2 - i * 0.12, offset);
+    });
+
+    // Sub bass final note
+    const sub = c.createOscillator();
+    const subEnv = c.createGain();
+    sub.type = 'sine';
+    sub.frequency.setValueAtTime(73.4, c.currentTime);
+    subEnv.gain.setValueAtTime(0, c.currentTime);
+    subEnv.gain.linearRampToValueAtTime(0.4, c.currentTime + 0.1);
+    subEnv.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 3.0);
+    sub.connect(subEnv); subEnv.connect(c.destination);
+    sub.start(c.currentTime); sub.stop(c.currentTime + 3.2);
+  }
+
+  /* ── Unlock audio context on first user gesture ── */
+  let unlocked = false;
+  function unlock() {
+    if (unlocked) return;
+    unlocked = true;
+    getCtx();
+    startAmbientPad();
+  }
+  ['pointerdown','keydown','touchstart'].forEach(ev =>
+    document.addEventListener(ev, unlock, { once: true })
+  );
+
+  return {
+    startAmbientPad,
+    stopAmbientPad,
+    radarPing:    crystalChime,
+    scanBlip:     (freq, vol) => whisperSweep(typeof freq === 'number' ? Math.round(freq / 250) : 0),
+    lockOn:       goldenLock,
+    whooshReveal: grandReveal,
+    unlock
+  };
+})();
+
+/* =========================================================
    RADAR MAP & MAGNIFYING GLASS OPENING ANIMATION
    ========================================================= */
 const openingScreen = document.getElementById('openingScreen');
@@ -81,6 +333,8 @@ let introFinished = false;
 function finishOpening() {
   if (introFinished) return;
   introFinished = true;
+  // — SFX: Cinematic whoosh + shimmer saat site terbuka —
+  SFX.whooshReveal();
   if (openingScreen) {
     if (magnifierLens) {
       magnifierLens.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease';
@@ -98,10 +352,6 @@ function finishOpening() {
 if (openingScreen && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   const introDurationMs = 10000;
 
-  // Waypoints for the magnifier's search path. Position/rotation are
-  // interpolated continuously between these (see tick()) so the glass
-  // glides smoothly instead of hopping between fixed spots; the copy
-  // below still changes at each checkpoint, since text shouldn't tween.
   const searchPath = [
     { at: 0,   x: -110, y: -20, rot: -12, coords: "GPS: -7.2504° S, 112.7688° E", msg: "MENGAKTIFKAN RADAR LOKASI...", sub: "RADAR: MEMINDAI JAWA TIMUR" },
     { at: 25,  x: 100,  y: -10, rot: 10,  coords: "GPS: -7.9797° S, 112.6304° E", msg: "MEMINDAI AREA: KOTA MALANG...", sub: "RADAR: MENDETEKSI SINYAL KREATIF" },
@@ -117,6 +367,10 @@ if (openingScreen && !window.matchMedia('(prefers-reduced-motion: reduce)').matc
   let rafId = null;
   let lockTriggered = false;
 
+  // SFX: Periodic radar ping (every ~2.2 s of animation, matching CSS sweep)
+  let lastPingTime = -999;
+  let lastBlipStep = -1;
+
   function tick(timestamp) {
     if (!startTime) startTime = timestamp;
     const elapsed = timestamp - startTime;
@@ -125,13 +379,22 @@ if (openingScreen && !window.matchMedia('(prefers-reduced-motion: reduce)').matc
     if (openingCounter) openingCounter.textContent = `${String(Math.floor(progress)).padStart(2, '0')}%`;
     if (openingFill) openingFill.style.width = `${progress}%`;
 
+    // — SFX: Radar ping every ~2.2 s of real time —
+    const elapsedSec = elapsed / 1000;
+    if (elapsedSec - lastPingTime >= 2.2) {
+      lastPingTime = elapsedSec;
+      SFX.radarPing();
+    }
+
     // Locate the segment the current progress falls in, then ease across it.
     let prev = searchPath[0];
     let next = searchPath[searchPath.length - 1];
+    let currentStepIdx = 0;
     for (let i = 0; i < searchPath.length - 1; i++) {
       if (progress >= searchPath[i].at && progress <= searchPath[i + 1].at) {
         prev = searchPath[i];
         next = searchPath[i + 1];
+        currentStepIdx = i;
         break;
       }
     }
@@ -153,10 +416,19 @@ if (openingScreen && !window.matchMedia('(prefers-reduced-motion: reduce)').matc
     if (terminalText && activeStep.msg !== lastMsg) {
       terminalText.textContent = activeStep.msg;
       lastMsg = activeStep.msg;
+
+      // — SFX: Scan blip on each new waypoint message (different freq per step) —
+      const blipFreqs = [1100, 900, 950, 0, 0];
+      if (currentStepIdx !== lastBlipStep && blipFreqs[currentStepIdx] > 0) {
+        lastBlipStep = currentStepIdx;
+        SFX.scanBlip(blipFreqs[currentStepIdx]);
+      }
     }
 
     if (progress >= 82 && !lockTriggered) {
       lockTriggered = true;
+      // — SFX: Lock-on alert —
+      SFX.lockOn();
       if (magnifierLens) {
         magnifierLens.style.transition = 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
         magnifierLens.style.transform = 'translate(-50%, -50%) scale(1.18)';
