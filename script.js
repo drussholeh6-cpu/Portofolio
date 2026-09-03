@@ -3,8 +3,11 @@
    ========================================================= */
 const cursorDot = document.getElementById('cursorDot');
 const cursorRing = document.getElementById('cursorRing');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobileView = window.matchMedia('(max-width: 760px), (pointer: coarse)').matches;
+const useRichEffects = !prefersReducedMotion && !isMobileView;
 
-if (cursorDot && cursorRing && !window.matchMedia('(pointer: coarse)').matches) {
+if (cursorDot && cursorRing && useRichEffects) {
   let mouseX = window.innerWidth / 2;
   let mouseY = window.innerHeight / 2;
   let ringX = mouseX;
@@ -295,6 +298,7 @@ const SFX = (() => {
   /* ── Unlock audio context on first user gesture ── */
   let unlocked = false;
   function unlock() {
+    if (!useRichEffects) return;
     if (unlocked) return;
     unlocked = true;
     getCtx();
@@ -333,8 +337,7 @@ let introFinished = false;
 function finishOpening() {
   if (introFinished) return;
   introFinished = true;
-  // — SFX: Cinematic whoosh + shimmer saat site terbuka —
-  SFX.whooshReveal();
+  if (useRichEffects) SFX.whooshReveal();
   if (openingScreen) {
     if (magnifierLens) {
       magnifierLens.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease';
@@ -344,13 +347,13 @@ function finishOpening() {
     openingScreen.classList.add('done');
     setTimeout(() => {
       openingScreen.style.display = 'none';
-    }, 850);
+    }, useRichEffects ? 850 : 0);
   }
   startTypewriter();
 }
 
-if (openingScreen && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  const introDurationMs = 10000;
+if (openingScreen && useRichEffects) {
+  const introDurationMs = 4200;
 
   const searchPath = [
     { at: 0,   x: -110, y: -20, rot: -12, coords: "GPS: -7.2504° S, 112.7688° E", msg: "MENGAKTIFKAN RADAR LOKASI...", sub: "RADAR: MEMINDAI JAWA TIMUR" },
@@ -466,7 +469,7 @@ function startTypewriter() {
     { element: document.querySelector('.writer-text'), delay: 1200, speed: 20 }
   ];
 
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (useRichEffects) {
     writerTargets.forEach(({ element, delay, speed }) => {
       if (!element) return;
       const fullText = element.textContent.trim();
@@ -519,7 +522,7 @@ const navItems = navLinks ? [...navLinks.querySelectorAll('a')] : [];
 const navSections = navItems
   .map(item => document.querySelector(item.getAttribute('href')))
   .filter(Boolean);
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduceMotion = prefersReducedMotion;
 let navigationTimer;
 let isNavigating = false;
 
@@ -756,7 +759,7 @@ function handleSubmit(e){
    3D BACKGROUND CANVAS ENGINE (HIGH PERFORMANCE & ZERO-LAG)
    ========================================================= */
 const bgCanvas = document.getElementById('bg3dCanvas');
-if (bgCanvas && !reduceMotion) {
+if (bgCanvas && useRichEffects) {
   const ctx = bgCanvas.getContext('2d');
   let width, height, cx, cy;
   let mouseX = 0, mouseY = 0;
@@ -776,7 +779,7 @@ if (bgCanvas && !reduceMotion) {
     targetMouseY = (e.clientY - cy) / cy;
   }, { passive: true });
 
-  const particleCount = Math.min(Math.floor(window.innerWidth / 18), 70);
+  const particleCount = Math.min(Math.floor(window.innerWidth / 32), 34);
   const particles = [];
   const focalLength = 360;
 
@@ -928,7 +931,7 @@ if (bgCanvas && !reduceMotion) {
 /* =========================================================
    INTERACTIVE 3D CARD TILT EFFECT
    ========================================================= */
-if (!reduceMotion && !window.matchMedia('(pointer: coarse)').matches) {
+if (useRichEffects) {
   const tiltElements = document.querySelectorAll('.card, .skill-card, .profile-photo-frame, .ach-item');
 
   tiltElements.forEach(el => {

@@ -960,6 +960,105 @@ footer .foot-star{ width:18px; height:18px; opacity:0.75; filter:drop-shadow(0 0
   .opening-meta{ flex-direction:column; gap:4px; align-items:center; }
 }
 
+@media (max-width: 760px), (pointer: coarse){
+  html{
+    scroll-behavior:auto;
+  }
+
+  body{
+    cursor:auto;
+    background:#0c0906;
+  }
+
+  section:not(.hero){
+    content-visibility:auto;
+    contain-intrinsic-size:700px;
+  }
+
+  .opening-screen,
+  #bg3dCanvas,
+  .cursor-dot,
+  .cursor-ring{
+    display:none !important;
+  }
+
+  .bg-texture{
+    background-image:
+      radial-gradient(circle at 20% 12%, rgba(217,176,101,0.08) 0%, transparent 44%),
+      linear-gradient(180deg, rgba(12,9,6,0.96), rgba(18,13,9,0.98));
+    background-size:100% 100%;
+    animation:none;
+  }
+
+  header,
+  nav.links,
+  .profile-photo-frame,
+  .profile-meta,
+  .about-text,
+  .stat-list,
+  .card,
+  .skill-card,
+  .ach-proof,
+  .contact-list a,
+  form,
+  footer,
+  .proof-lightbox{
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+  }
+
+  .profile-photo-frame,
+  .card,
+  .skill-card,
+  .ach-proof,
+  form{
+    box-shadow:0 10px 24px rgba(0,0,0,.34);
+    transform:none !important;
+    transform-style:flat;
+  }
+
+  .profile-photo-frame,
+  .profile-photo-frame::after,
+  .scroll-hint .line,
+  .writer-text.typing::after{
+    animation:none !important;
+  }
+
+  .reveal{
+    opacity:1;
+    transform:none;
+    transition:none;
+  }
+
+  .card:hover,
+  .skill-card:hover,
+  .ach-proof:hover,
+  .contact-list a:hover,
+  .btn:hover,
+  .filter-btn.active,
+  .filter-btn:hover{
+    transform:none;
+  }
+
+  .card-thumb img,
+  .ach-proof img,
+  .profile-photo-frame img{
+    filter:none;
+  }
+
+  .card:hover .card-thumb img,
+  .ach-proof:hover img{
+    transform:none;
+    filter:none;
+  }
+
+  .card-overlay-btn{
+    opacity:1;
+    transform:none;
+    border-radius:6px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
   .opening-screen{ display:none; }
