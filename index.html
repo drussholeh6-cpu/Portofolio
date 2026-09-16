@@ -20,63 +20,6 @@
 <div class="bg-texture" aria-hidden="true"></div>  
 <canvas id="bg3dCanvas" aria-hidden="true"></canvas>
 
-<!-- Opening Screen: Radar Map & Magnifying Glass Location Finder -->
-<div class="opening-screen" id="openingScreen" aria-label="Memuat portofolio">
-  <div class="map-grid-bg" aria-hidden="true">
-    <div class="map-radar-rings"></div>
-    <div class="map-radar-sweep"></div>
-    <div class="map-cross-axis"></div>
-  </div>
-  
-  <div class="magnifier-stage">
-    <!-- Location Pin / Target Found Pulse -->
-    <div class="location-pin" id="locationPin" aria-hidden="true">
-      <div class="pin-pulse"></div>
-      <div class="pin-pulse-2"></div>
-      <div class="pin-icon">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
-        </svg>
-      </div>
-      <span class="pin-tag">MALANG // ID</span>
-    </div>
-
-    <!-- Moving Magnifying Glass with Lens & Reticle -->
-    <div class="magnifier-lens" id="magnifierLens" aria-hidden="true">
-      <div class="lens-rim"></div>
-      <div class="lens-glass">
-        <div class="lens-reticle"></div>
-        <div class="lens-scan-beam"></div>
-        <div class="lens-reflection"></div>
-      </div>
-      <div class="lens-handle"></div>
-    </div>
-  </div>
-
-  <!-- HUD Status & Coordinates -->
-  <div class="opening-hud">
-    <div class="hud-badge">GPS TRACKING // PORTFOLIO 2026</div>
-    <h2 class="opening-title">MUKHAMAD BADRUS SHOLEH</h2>
-    <div class="hud-coords" id="hudCoords">GPS: -7.9839° S, 112.6214° E</div>
-    <div class="opening-terminal" id="openingTerminal" aria-live="polite">
-      <span class="t-text" id="terminalText">MENCARI KOORDINAT LOKASI...</span>
-    </div>
-    <div class="opening-progress-wrap">
-      <div class="opening-bar">
-        <div class="opening-fill" id="openingFill"></div>
-      </div>
-      <div class="opening-meta">
-        <span class="o-sub" id="openingSub">RADAR: MEMINDAI AREA MALANG</span>
-        <span class="opening-counter" id="openingCounter">00%</span>
-      </div>
-    </div>
-  </div>
-
-  <button type="button" class="opening-skip" id="openingSkip" aria-label="Lewati intro">
-    LEWATI INTRO <span class="skip-key">[ESC]</span>
-  </button>
-</div>
-
 <!-- Header -->
 <header id="siteHeader">
   <a href="#top" class="logo">
