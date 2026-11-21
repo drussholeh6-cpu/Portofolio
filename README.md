@@ -82,7 +82,7 @@ File di dalam `public/` diakses langsung dari root, jadi di kode ditulis `/Foto/
 - Email: sholehbadrus278@email.com
 - Instagram: [@mukh.bad_rush](https://www.instagram.com/mukh.bad_rush)
 - TikTok: [@mukh.bad_rush](https://www.tiktok.com/@mukh.bad_rush)
-- WhatsApp: +62 831-4424-8221
+
 
 ## Lisensi
 
