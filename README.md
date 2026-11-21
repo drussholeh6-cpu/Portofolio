@@ -1,96 +1,89 @@
 # Portofolio Mukhamad Badrus Sholeh
 
-Portofolio personal yang menampilkan profil, karya desain grafis, fotografi, skill, dan prestasi saya dalam sebuah landing page modern dengan tema elegan dan futuristik.
+Website portofolio berisi karya desain grafis dan fotografi, skill, serta prestasi akademik dan lomba.
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![Responsive](https://img.shields.io/badge/Responsive-Design-00b894?style=for-the-badge)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white)
+![License](https://img.shields.io/badge/License-Personal-lightgrey?style=flat-square)
 
-## Tentang Proyek
+## Fitur
 
-Website ini dibuat untuk memperkenalkan diri sebagai mahasiswa Matematika UIN Maulana Malik Ibrahim Malang yang sekaligus aktif di bidang desain grafis dan fotografi. Dengan pendekatan visual yang modern, proyek ini menggabungkan elemen estetika, interaksi, dan storytelling untuk menampilkan karya serta identitas personal.
+- Kartu identitas di bagian hero yang bisa ditarik dan berayun
+- Mode terang dan gelap, mengikuti pengaturan perangkat dan bisa diganti manual
+- Navigasi yang menyesuaikan bagian halaman yang sedang dibuka
+- Galeri karya dengan filter Desain Grafis dan Fotografi
+- Skill dengan carousel yang bisa digeser dengan mouse, jari, atau tombol
+- Prestasi dengan dokumentasi yang bisa dibuka dalam tampilan layar penuh
+- Formulir kontak yang membuka aplikasi email
+- Mendukung pengaturan "kurangi gerakan" di perangkat
 
-## Fitur Utama
+## Teknologi
 
-- Intro layar awal dengan efek radar/GPS
-- Cursor kustom yang halus dan interaktif
-- Background dinamis dan ambient visual
-- Galeri karya dengan kategori Desain Grafis dan Fotografi
-- Lightbox modal untuk melihat detail karya
-- Section skill dan tools dengan tampilan carousel
-- Prestasi akademik dan kegiatan yang ditampilkan secara rapi
-- Navigasi responsif untuk desktop dan mobile
-- Form kontak dan tombol akses cepat ke media sosial
+- React 18
+- Vite 5
+- CSS biasa dengan variabel CSS
+- Font Bricolage Grotesque dan Instrument Sans dari Google Fonts
 
-## Struktur Folder
+## Menjalankan di komputer lokal
+
+Butuh [Node.js](https://nodejs.org) versi 18 atau lebih baru.
 
 ```bash
-Portofolio/
+npm install
+npm run dev
+```
+
+Buka `http://localhost:5173` di browser.
+
+Untuk membuat versi produksi:
+
+```bash
+npm run build
+npm run preview
+```
+
+Hasil build ada di folder `dist/`. Proyek ini perlu dijalankan lewat perintah di atas. Membuka `index.html` langsung di browser tidak akan menampilkan halaman dengan benar.
+
+## Struktur folder
+
+```
+portofolio/
+├── public/
+│   ├── Foto/            foto profil, karya, dan dokumentasi
+│   └── Logo/            logo software untuk bagian skill
+├── src/
+│   ├── App.jsx          isi seluruh halaman
+│   ├── Lanyard.jsx      kartu identitas di hero
+│   ├── main.jsx         titik masuk aplikasi
+│   └── style.css        tampilan dan animasi
+├── .gitignore
 ├── index.html
-├── style.css
-├── script.js
-├── sitemap.xml
-├── README.md
-├── Foto/
-│   ├── favicon.png
-│   ├── Profile.JPG
-│   ├── Badrus.JPG
-│   ├── Difani.JPG
-│   ├── Hanif.JPG
-│   ├── Kak Fai.JPG
-│   ├── Portofolio.png
-│   ├── STOP SCROLL.png
-│   └── ...
-├── Logo/
-│   ├── Adobe-Photoshop-Logo.png
-│   ├── canva-transparent-icon-free-png.webp
-│   ├── CapCut-Symbol.png
-│   ├── vscode-logo.png
-│   ├── github-logo.png
-│   ├── html-logo.png
-│   ├── python-logo-notext.svg.webp
-│   └── ...
-└── .gitignore
+├── package.json
+└── vite.config.js
 ```
 
-## Teknologi yang Digunakan
+File di dalam `public/` diakses langsung dari root, jadi di kode ditulis `/Foto/nama-file.jpg`.
 
-- HTML5
-- CSS3
-- JavaScript (vanilla)
-- Google Fonts
-- SVG icon
-- Responsive design
+## Mengubah isi
 
-## Cara Menjalankan
+- Nama, deskripsi, dan kontak ada di `src/App.jsx`.
+- Karya, skill, dan prestasi ada di array `WORKS`, `SKILLS`, dan `ACH` pada file yang sama.
+- Teks dan data kartu identitas ada di komponen `Lanyard` pada bagian `App.jsx`.
+- Warna utama ada di bagian `:root` pada `src/style.css`. Variabel `--acc` mengatur warna aksen.
 
-### 1. Buka langsung
-Cukup buka file `index.html` di browser.
+## Deploy
 
-### 2. Jalankan dengan server lokal
-```bash
-python -m http.server 8000
-```
-Lalu buka:
-```bash
-http://localhost:8000
-```
+1. Push repo ke GitHub.
+2. Buka [vercel.com](https://vercel.com), pilih **Add New → Project**, lalu impor repo tersebut.
+3. Vercel akan mengenali proyek Vite secara otomatis. Klik **Deploy**.
 
 ## Kontak
 
-- Nama: Mukhamad Badrus Sholeh
-- Kampus: UIN Maulana Malik Ibrahim Malang
 - Email: sholehbadrus278@email.com
-- Instagram: @mukh.bad_rush
-- TikTok: @mukh.bad_rush
+- Instagram: [@mukh.bad_rush](https://www.instagram.com/mukh.bad_rush)
+- TikTok: [@mukh.bad_rush](https://www.tiktok.com/@mukh.bad_rush)
 - WhatsApp: +62 831-4424-8221
 
-## License
+## Lisensi
 
-Proyek ini dibuat untuk kebutuhan personal dan portfolio. Dilarang menggandakan atau menggunakan sebagian besar konten secara komersial tanpa izin.
-
-## Catatan
-
-Website ini dibuat dengan pendekatan modern dan estetika luxury dark theme, dengan fokus pada pengalaman pengguna, visual yang kuat, serta penyampaian identitas diri yang profesional.
-
+Proyek ini dibuat untuk portofolio pribadi. Konten berupa foto, desain, dan teks tidak boleh digandakan atau dipakai secara komersial tanpa izin.
