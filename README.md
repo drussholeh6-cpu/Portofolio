@@ -15,6 +15,7 @@ Website portofolio berisi karya desain grafis dan fotografi, skill, serta presta
 - Skill dengan carousel yang bisa digeser dengan mouse, jari, atau tombol
 - Prestasi dengan dokumentasi yang bisa dibuka dalam tampilan layar penuh
 - Formulir kontak yang membuka aplikasi email
+- Chat AI (Google Gemini) yang menjawab pertanyaan seputar portofolio
 - Mendukung pengaturan "kurangi gerakan" di perangkat
 
 ## Teknologi
@@ -87,3 +88,18 @@ File di dalam `public/` diakses langsung dari root, jadi di kode ditulis `/Foto/
 ## Lisensi
 
 Proyek ini dibuat untuk portofolio pribadi. Konten berupa foto, desain, dan teks tidak boleh digandakan atau dipakai secara komersial tanpa izin.
+
+## Chat AI (Google Gemini)
+
+Tombol **Tanya AI** di pojok kanan bawah membuka panel chat. Browser tidak memegang API key: pesan dikirim ke `/api/chat`, lalu server meneruskannya ke Gemini.
+
+```
+Browser (src/Chat.jsx) -> /api/chat (api/chat.js) -> Gemini API
+```
+
+1. Buat API key di [Google AI Studio](https://aistudio.google.com/apikey).
+2. Salin `.env.example` menjadi `.env.local`, lalu isi `GEMINI_API_KEY`.
+3. Jalankan `npm run dev`. Endpoint `/api/chat` ikut berjalan lewat `vite.config.js`.
+4. Saat deploy ke Vercel, tambahkan `GEMINI_API_KEY` di Project Settings > Environment Variables, lalu deploy ulang.
+
+Model bisa diganti lewat `GEMINI_MODEL` (default `gemini-3.6-flash`). Isi pengetahuan asisten ada di `lib/persona.js`, perbarui bila karya atau prestasi bertambah.

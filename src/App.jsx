@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import Lanyard from './Lanyard.jsx'
+import { Scene3D, useDepth } from './Depth.jsx'
+import Chat from './Chat.jsx'
 
 const NAV = [
   ['top', 'Beranda', 'm3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z'],
@@ -36,8 +38,9 @@ const EMAIL = 'sholehbadrus278@email.com'
 function R({ as: T = 'div', className = '', i = 0, ...p }) {
   const ref = useRef()
   useEffect(() => {
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { e.target.classList.add('in'); io.disconnect() } }, { threshold: 0.12 })
-    io.observe(ref.current); return () => io.disconnect()
+    let tm
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { e.target.classList.add('in'); io.disconnect(); tm = setTimeout(() => e.target.style.setProperty('--reveal-delay', '0ms'), 1500) } }, { threshold: 0.12 })
+    io.observe(ref.current); return () => { io.disconnect(); clearTimeout(tm) }
   }, [])
   return <T ref={ref} className={`reveal ${className}`} style={{ '--reveal-delay': `${(i % 4) * 80}ms` }} {...p} />
 }
@@ -102,9 +105,10 @@ export default function App() {
   const [menu, setMenu] = useState(false), [scrolled, setScrolled] = useState(false)
   const [filter, setFilter] = useState('all'), [box, setBox] = useState(null), [sent, setSent] = useState(false)
 
+  useDepth()
   useEffect(() => {
     const sc = () => setScrolled(scrollY > 40); sc(); addEventListener('scroll', sc, { passive: true })
-    const sel = '.card, .skill-card, .ach-item, .profile-meta div, .stat-list, form, .contact-info, .links, .id-card'
+    const sel = '.card, .skill-card, .ach-item, .profile-meta div, .stat-list, form, .contact-info, .links, .id-card, .chat-panel'
     const pm = e => { const g = e.target.closest?.(sel); if (g) { const r = g.getBoundingClientRect(); g.style.setProperty('--mx', e.clientX - r.left + 'px'); g.style.setProperty('--my', e.clientY - r.top + 'px') } }
     addEventListener('pointermove', pm, { passive: true })
     return () => { removeEventListener('scroll', sc); removeEventListener('pointermove', pm) }
@@ -123,6 +127,7 @@ export default function App() {
   return (
     <>
       <div className="blobs" aria-hidden="true"><i /><i /><i /></div>
+      <Scene3D />
       <header className={scrolled ? 'scrolled' : ''}>
         <a href="#top" className="logo">
           <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><circle cx="20" cy="20" r="17.5" strokeWidth=".8" /><circle cx="20" cy="20" r="13.5" strokeWidth=".45" opacity=".65" /><path d="M13 26V14l7 8 7-8v12" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -227,6 +232,8 @@ export default function App() {
           <figure><img src={box.src} alt={box.alt} /><figcaption>{box.cap}</figcaption></figure>
         </div>
       )}
+
+      <Chat />
     </>
   )
 }
